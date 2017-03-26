@@ -28,6 +28,11 @@
 
 #define Btn_LED 4
 
-#define Voltage_Threshold 655
+#define Voltage_Threshold_batt1 1024*(3.65/5)
+#define Voltage_Threshold_batt2 1024*(3.65/5)
+#define Voltage_Threshold_batt3 1024*(3.65/5)
+#define Voltage_Threshold_batt4 1024*(3.65/5)
+#define Voltage_Threshold_batt5 1024*(3.65/5)
+#define Voltage_Threshold_batt6 1024*(3.65/5)
 
 #endif
