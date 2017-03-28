@@ -23,44 +23,68 @@ void setup() {
   pinMode(Motor_Power, OUTPUT);
   
   pinMode(Btn_LED, OUTPUT);
+  
 
-  digitalWrite(Voltade_Divider1, HIGH);
-  digitalWrite(Voltade_Divider2, HIGH);
-  digitalWrite(Voltade_Divider3, HIGH);
-  digitalWrite(Voltade_Divider4, HIGH);
-  digitalWrite(Voltade_Divider5, HIGH);
+ 
 }
  
 void loop() {
-  
-  if(analogRead(Input_Power)>500)
+
+  if(analogRead(Input_Power)>500 && BMS_state = Standby )
+  {
+    BMS_state = Standby;
+  }
+  else if(analogRead(Input_Power)>500)
   {
     BMS_state = Charging;
   }
-  
+                                    //  else if(analogRead(Input_Power)<500 && BMS_state == Running)
+                                    //  {
+                                    //    BMS_state = Running;
+                                    //  }
+                                    //  else if(analogRead(Input_Power)<500 && BMS_state == Standby)
+                                    //  {
+                                    //    BMS_state = Standby;
+                                    //  }
+
+  if(((BMS_state == Running)||(BMS_state == Standby)||(BMS_state == PowerDown))&& digitalRead(Button == 1))
+  {
+    BMS_state = PowerDown;
+  }
+
+  if((BMS_state == Charging)&&(analogRead(Input_Power)<500))
+  {
+    BMS_state = PowerDown;
+  }
   switch(BMS_state)
   {
     case Charging:
+     digitalWrite(Voltade_Divider1, HIGH);
+     digitalWrite(Voltade_Divider2, HIGH);
+     digitalWrite(Voltade_Divider3, HIGH);
+     digitalWrite(Voltade_Divider4, HIGH);
+     digitalWrite(Voltade_Divider5, HIGH);
       Process_Batt_Voltage();
       break;
 
       
     case Standby:
-      digitalWrite(Btn_LED, HIGH);
-      delay(1000);
-      digitalWrite(Btn_LED, LOW);
-      delay(1000);
+      pinMode(Button, INPUT); // replacing voltageDivider 1 pin to be an input to check whether or not to turn the board off
       standby();
       break;
 
       
     case PowerDown:
+      pinMode(Button, INPUT); // replacing voltageDivider 1 pin to be an input to check whether or not to turn the board off
+      standby();
       digitalWrite(Main_Power,LOW);
       break;
 
       
     case Running:
+      pinMode(Button, INPUT); // replacing voltageDivider 1 pin to be an input to check whether or not to turn the board off
       digitalWrite(Motor_Power,HIGH);
+      DontDrainTooLow();
       break;
   }
   Serial.println(BMS_state);
@@ -148,8 +172,6 @@ void Process_Batt_Voltage()
   }
 }
 
-
-
 void standby()
 {
   digitalWrite(Voltade_Divider1, LOW);
@@ -157,5 +179,13 @@ void standby()
   digitalWrite(Voltade_Divider3, LOW);
   digitalWrite(Voltade_Divider4, LOW);
   digitalWrite(Voltade_Divider5, LOW);
+}
+
+void DontDrainTooLow()
+{
+  if (Voltage1< Min_Voltage1&&Voltage2< Min_Voltage2&&Voltage3< Min_Voltage3&&Voltage4< Min_Voltage4&&Voltage5< Min_Voltage5&&Voltage6< Min_Voltage6)
+  {
+    BMS_state = PowerDown;
+  }
 }
 

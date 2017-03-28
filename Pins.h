@@ -14,7 +14,7 @@
 #define Voltage_Check5 4
 #define Voltage_Check6 5
 #define Input_Power 7
-
+#define Button 2
 #define Cell_Drain1 5
 #define Cell_Drain2 6
 #define Cell_Drain3 7
@@ -34,5 +34,14 @@
 #define Voltage_Threshold_batt4 1024*(3.65/5)
 #define Voltage_Threshold_batt5 1024*(3.65/5)
 #define Voltage_Threshold_batt6 1024*(3.65/5)
+
+
+#define Min_Voltage1 1024*(2.8/5)
+#define Min_Voltage2 1024*(2.8/5)
+#define Min_Voltage3 1024*(2.8/5)
+#define Min_Voltage4 1024*(2.8/5)
+#define Min_Voltage5 1024*(2.8/5)
+#define Min_Voltage6 1024*(2.8/5)
+
 
 #endif
